@@ -15,39 +15,35 @@ Built on **ROS 2 Humble** and **MoveIt 2**, this system features a **custom real
 
 ## 🎥 Video Demonstrations
 
-<!-- ================================================================= -->
-<!-- 🎥 VIDEO DEMO 1: ROBOT PICK AND PLACE SIMULATION                  -->
-<!-- Paste your GitHub video attachment link or GIF image URL below:   -->
-<!-- Example: ![Pick and Place Demo](docs/assets/pick_and_place.gif)   -->
-<!-- ================================================================= -->
+================================================================= 
+### 🎥 VIDEO DEMO 1: ROBOT PICK AND PLACE SIMULATION  
+https://github.com/Ramyaa29/Franka_pick_and_place/blob/main/assets/Video.mp4   
 
-### 🦾 Autonomous 3D Pick & Place in Gazebo & RViz
-> *Demonstrating autonomous target perception, Cartesian descent, object grasp, and drop into sorting bin.*
-
-https://github.com/user-attachments/assets/0813eb4e-310d-4b68-b538-3c8a857079a4
+================================================================= 
 
 ---
 
-<!-- ================================================================= -->
-<!-- 🎥 VIDEO DEMO 2: FLASK WEB GUI DASHBOARD INTERACTION              -->
-<!-- Paste your Web GUI screen recording link or GIF image URL below:  -->
-<!-- Example: ![Flask Web GUI Demo](docs/assets/web_gui_demo.gif)      -->
-<!-- ================================================================= -->
-
-### 🌐 Interactive Web GUI Controller & Live Camera Stream
-> *Clicking Pick Green / Red / Blue, live overhead RealSense video streaming, and instant Emergency Stop.*
-
-```
-<!-- 🎥 DRAG AND DROP YOUR WEB GUI DEMO VIDEO / GIF HERE IN GITHUB EDIT MODE -->
-```
+=================================================================
+### 🎥 VIDEO DEMO 2: FLASK WEB GUI DASHBOARD INTERACTION 
+https://github.com/Ramyaa29/Franka_pick_and_place/blob/main/assets/GUI.mp4
+=================================================================
 
 ---
+
+## Key Technologies Used
+
+Languages: Python, HTML, CSS, JavaScript, Bash
+Robotics: ROS 2 Humble, MoveIt 2, PyMoveIt2, ros2_control
+Simulation: Gazebo Sim Fortress, RViz2
+Computer Vision: OpenCV, HSV-based color detection, RealSense RGB-D camera
+Web Development: Flask, real-time MJPEG streaming
+DevOps and Environment: Docker, Docker Compose, Ubuntu, WSL2
 
 ## 🌟 Unique Features & Enhancements
 
 This project significantly enhances standard robotic sorting pipelines with a complete human-machine interface and production containerization:
 
-* 🎛️ **Full-Stack Flask Web Controller**: Control the robot from any browser (`http://localhost:5000`) without typing terminal commands.
+* 🎛️ **Flask Web Controller**: Control the robot from any browser (`http://localhost:5000`) without typing terminal commands.
 * 🔴🟢🔵 **Interactive 3-Color Pick Triggers**: Dedicated **Pick Red (`🟥`)**, **Pick Green (`🟩`)**, and **Pick Blue (`🟦`)** buttons.
 * 📹 **Live Overhead RealSense Video Feed**: Low-latency MJPEG video streaming of the camera feed (`/camera/image_raw`) directly on the web page.
 * ⏹️ **Instant Emergency Stop & Preemption**: Real-time trajectory preemption halts the arm immediately without crashing the node.
