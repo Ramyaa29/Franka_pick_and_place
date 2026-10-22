@@ -17,15 +17,15 @@ Built on **ROS 2 Humble** and **MoveIt 2**, this system features a **custom real
 
 ================================================================= 
 ### 🎥 VIDEO DEMO 1: ROBOT PICK AND PLACE SIMULATION  
-https://github.com/Ramyaa29/Franka_pick_and_place/blob/main/assets/Video.mp4   
-
+  <!-- [▶️ Watch the GUI Demo](assets/GUI.mp4) -->
 ================================================================= 
 
 ---
 
 =================================================================
 ### 🎥 VIDEO DEMO 2: FLASK WEB GUI DASHBOARD INTERACTION 
-https://github.com/Ramyaa29/Franka_pick_and_place/blob/main/assets/GUI.mp4
+<!-- https://github.com/Ramyaa29/Franka_pick_and_place/blob/main/assets/GUI.mp4 -->
+[▶️ Watch the GUI Demo](assets/GUI.mp4)
 =================================================================
 
 ---
