@@ -20,6 +20,19 @@ Built on **ROS 2 Humble** and **MoveIt 2**, this system features a **custom real
   <!-- [▶️ Watch the GUI Demo](assets/GUI.mp4) -->
   
 
+https://github.com/user-attachments/assets/10ca574c-44ac-41cf-b216-2f3bab0099c5
+
+
+
+
+
+
+
+https://github.com/user-attachments/assets/0cdce0eb-e928-4099-9cc5-9360b3598045
+
+
+  
+
 
 ================================================================= 
 
@@ -29,7 +42,6 @@ Built on **ROS 2 Humble** and **MoveIt 2**, this system features a **custom real
 ### 🎥 VIDEO DEMO 2: FLASK WEB GUI DASHBOARD INTERACTION
 
 
-https://github.com/user-attachments/assets/8a4f00f3-4fa0-44d2-b9e9-23db8fc8f0d9
 
 
 
@@ -40,12 +52,12 @@ https://github.com/user-attachments/assets/8a4f00f3-4fa0-44d2-b9e9-23db8fc8f0d9
 
 ## Key Technologies Used
 
-Languages: Python, HTML, CSS, JavaScript, Bash
-Robotics: ROS 2 Humble, MoveIt 2, PyMoveIt2, ros2_control
-Simulation: Gazebo Sim Fortress, RViz2
-Computer Vision: OpenCV, HSV-based color detection, RealSense RGB-D camera
-Web Development: Flask, real-time MJPEG streaming
-DevOps and Environment: Docker, Docker Compose, Ubuntu, WSL2
+Languages: Python, HTML, CSS, JavaScript, Bash |
+Robotics: ROS 2 Humble, MoveIt 2, PyMoveIt2, ros2_control|
+Simulation: Gazebo Sim Fortress, RViz2|
+Computer Vision: OpenCV, HSV-based color detection, RealSense RGB-D camera|
+Web Development: Flask, real-time MJPEG streaming|
+DevOps and Environment: Docker, Docker Compose, Ubuntu, WSL2|
 
 ## 🌟 Unique Features & Enhancements
 
