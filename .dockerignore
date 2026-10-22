@@ -1,0 +1,11 @@
+build/
+log/
+.git/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.system_generated/
+*.log
+install/panda_*
+install/pymoveit2

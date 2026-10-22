@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franka Emika Panda | Pick & Place Controller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-red: #ef4444;
+            --accent-red-hover: #dc2626;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-yellow: #f59e0b;
+            --accent-cyan: #06b6d4;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            padding: 20px 28px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .title-group h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .title-group p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .system-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #34d399;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 12px;
+        }
+
+        /* Primary Pick Buttons */
+        .pick-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .btn-pick {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 14px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-pick:active {
+            transform: scale(0.97);
+        }
+
+        .btn-pick .cube-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .btn-pick .btn-label {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.01em;
+        }
+
+        .btn-pick .btn-sub {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Color Variations */
+        .btn-pick-red {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+        }
+        .btn-pick-red:hover {
+            background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+
+        .btn-pick-green {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }
+        .btn-pick-green:hover {
+            background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-pick-blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+        .btn-pick-blue:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Control Action Buttons (Start, Stop, Reset) */
+        .controls-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1.2fr 1fr;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .btn-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 14px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #ffffff;
+        }
+
+        .btn-control:active {
+            transform: scale(0.97);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(52, 211, 153, 0.4);
+        }
+        .btn-start:hover {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(248, 113, 113, 0.4);
+        }
+        .btn-stop:hover {
+            background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.7);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            border: 1px solid var(--border-color);
+        }
+        .btn-reset:hover {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        }
+
+        /* Status & Telemetry */
+        .status-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .status-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .badge-idle {
+            background: rgba(148, 163, 184, 0.15);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .badge-running {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        .badge-stopped {
+            background: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.6);
+        }
+
+        .action-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.08);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #38bdf8;
+        }
+
+        /* Coordinates Card */
+        .coords-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .coord-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .coord-card.red-border { border-top: 3px solid var(--accent-red); }
+        .coord-card.green-border { border-top: 3px solid var(--accent-green); }
+        .coord-card.blue-border { border-top: 3px solid var(--accent-blue); }
+
+        .coord-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .coord-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #e2e8f0;
+        }
+
+        /* Video Stream Container */
+        .video-container {
+            position: relative;
+            width: 100%;
+            background-color: #000000;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 2 / 1;
+        }
+
+        .video-stream {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .video-overlay-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #34d399;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Activity Log Console */
+        .log-console {
+            background-color: #0b1120;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            height: 140px;
+            overflow-y: auto;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .log-entry {
+            line-height: 1.4;
+        }
+
+        .log-time {
+            color: var(--text-muted);
+        }
+
+        .log-success { color: #34d399; }
+        .log-warn { color: #fbbf24; }
+        .log-error { color: #f87171; }
+        .log-info { color: #60a5fa; }
+
+        /* Notification toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: none;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="logo-icon">🤖</div>
+                <div class="title-group">
+                    <h1>Franka Emika Panda Controller</h1>
+                    <p>ROS 2 Humble & MoveIt 2 Autonomous Pick-and-Place</p>
+                </div>
+            </div>
+            <div class="system-pill">
+                <span class="pulse-dot"></span>
+                <span id="ros-status-text">ROS 2 Active</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Left Column: Controls & Coordinates -->
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                <!-- Control Panel Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>🎯</span> Select Target Object to Pick
+                    </div>
+
+                    <!-- 3 Primary Pick Buttons -->
+                    <div class="pick-buttons-grid">
+                        <button class="btn-pick btn-pick-red" onclick="sendCommand('PICK_R')">
+                            <span class="cube-icon">🟥</span>
+                            <span class="btn-label">Pick Red</span>
+                            <span class="btn-sub" id="sub-r">Target R</span>
+                        </button>
+                        <button class="btn-pick btn-pick-green" onclick="sendCommand('PICK_G')">
+                            <span class="cube-icon">🟩</span>
+                            <span class="btn-label">Pick Green</span>
+                            <span class="btn-sub" id="sub-g">Target G</span>
+                        </button>
+                        <button class="btn-pick btn-pick-blue" onclick="sendCommand('PICK_B')">
+                            <span class="cube-icon">🟦</span>
+                            <span class="btn-label">Pick Blue</span>
+                            <span class="btn-sub" id="sub-b">Target B</span>
+                        </button>
+                    </div>
+
+                    <!-- Action Control Buttons: Start, Stop, Reset -->
+                    <div class="controls-row">
+                        <button class="btn-control btn-start" onclick="sendCommand('START')">
+                            <span>▶️</span> Start Robot
+                        </button>
+                        <button class="btn-control btn-stop" onclick="sendCommand('STOP')">
+                            <span>⏹️</span> Stop Robot
+                        </button>
+                        <button class="btn-control btn-reset" onclick="sendCommand('RESET')">
+                            <span>🔄</span> Home Posture
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Status & Telemetry Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>📊</span> Real-Time Robot Status
+                    </div>
+
+                    <div class="status-box">
+                        <div class="status-row">
+                            <span class="status-label">Operational State:</span>
+                            <span id="state-badge" class="badge badge-idle">IDLE</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Emergency Stop:</span>
+                            <span id="estop-status" class="status-value" style="color: #34d399;">Disengaged</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Target Cube:</span>
+                            <span id="target-cube-text" class="status-value" style="color: #60a5fa;">None</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+                            <span class="status-label">Current Pipeline Action:</span>
+                            <div id="action-text" class="action-text">Robot ready at start posture</div>
+                        </div>
+                    </div>
+
+                    <!-- Target Coordinates Card -->
+                    <div class="card-title" style="margin-top: 6px;">
+                        <span>📍</span> Detected Vision Coordinates (Base Frame)
+                    </div>
+                    <div class="coords-grid">
+                        <div class="coord-card red-border">
+                            <div class="coord-title">🔴 RED CUBE</div>
+                            <div class="coord-val" id="coord-r">[0.60, 0.00, 0.04]</div>
+                        </div>
+                        <div class="coord-card green-border">
+                            <div class="coord-title">🟢 GREEN CUBE</div>
+                            <div class="coord-val" id="coord-g">[0.60, -0.22, 0.04]</div>
+                        </div>
+                        <div class="coord-card blue-border">
+                            <div class="coord-title">🔵 BLUE CUBE</div>
+                            <div class="coord-val" id="coord-b">[0.60, 0.21, 0.04]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Live Camera & Activity Console -->
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                <!-- Live Video Feed Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>📹</span> Live Overhead Camera Feed (Gazebo / RealSense)
+                    </div>
+                    <div class="video-container">
+                        <img class="video-stream" src="/video_feed" alt="Overhead Camera Stream" onerror="this.src='/video_feed?t=' + Date.now();">
+                        <div class="video-overlay-badge">
+                            <span class="pulse-dot" style="width: 7px; height: 7px;"></span>
+                            LIVE /camera/image_raw
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Console Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>📟</span> Activity & Event Log
+                    </div>
+                    <div class="log-console" id="log-console">
+                        <div class="log-entry"><span class="log-time">[Init]</span> <span class="log-success">Franka GUI Interface loaded. Ready for commands.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Command Sent</div>
+
+    <script>
+        const stateBadge = document.getElementById('state-badge');
+        const estopStatus = document.getElementById('estop-status');
+        const targetCubeText = document.getElementById('target-cube-text');
+        const actionText = document.getElementById('action-text');
+        const coordR = document.getElementById('coord-r');
+        const coordG = document.getElementById('coord-g');
+        const coordB = document.getElementById('coord-b');
+        const logConsole = document.getElementById('log-console');
+        const toast = document.getElementById('toast');
+
+        let lastActionMessage = "";
+
+        function addLog(message, type = 'info') {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            let colorClass = 'log-info';
+            if (type === 'success') colorClass = 'log-success';
+            if (type === 'warn') colorClass = 'log-warn';
+            if (type === 'error') colorClass = 'log-error';
+
+            entry.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="${colorClass}">${message}</span>`;
+            logConsole.appendChild(entry);
+            logConsole.scrollTop = logConsole.scrollHeight;
+        }
+
+        function showToast(msg) {
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2500);
+        }
+
+        async function sendCommand(cmd) {
+            addLog(`Sending command: ${cmd}...`, 'info');
+            showToast(`Command: ${cmd}`);
+
+            try {
+                const response = await fetch('/api/command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: cmd })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    addLog(`Command accepted: ${cmd}`, 'success');
+                } else {
+                    addLog(`Command failed: ${data.error}`, 'error');
+                }
+            } catch (err) {
+                addLog(`Network error sending command: ${err}`, 'error');
+            }
+        }
+
+        async function pollStatus() {
+            try {
+                const response = await fetch('/api/status');
+                if (!response.ok) return;
+                const data = await response.json();
+
+                // Update State Badge
+                const state = data.state || 'IDLE';
+                stateBadge.innerText = state;
+                stateBadge.className = 'badge';
+                if (state === 'IDLE') stateBadge.classList.add('badge-idle');
+                else if (state === 'RUNNING') stateBadge.classList.add('badge-running');
+                else if (state === 'STOPPED') stateBadge.classList.add('badge-stopped');
+
+                // Update E-Stop Status
+                if (data.is_stopped) {
+                    estopStatus.innerText = 'Engaged (STOPPED)';
+                    estopStatus.style.color = '#f87171';
+                } else {
+                    estopStatus.innerText = 'Disengaged (ACTIVE)';
+                    estopStatus.style.color = '#34d399';
+                }
+
+                // Update Target
+                targetCubeText.innerText = data.target ? `${data.target} Cube` : 'None';
+
+                // Update Current Action
+                if (data.action && data.action !== lastActionMessage) {
+                    actionText.innerText = data.action;
+                    addLog(data.action, state === 'STOPPED' ? 'warn' : 'info');
+                    lastActionMessage = data.action;
+                }
+
+                // Update Coordinates
+                if (data.coords) {
+                    if (data.coords.R) coordR.innerText = `[${data.coords.R.map(n => n.toFixed(3)).join(', ')}]`;
+                    if (data.coords.G) coordG.innerText = `[${data.coords.G.map(n => n.toFixed(3)).join(', ')}]`;
+                    if (data.coords.B) coordB.innerText = `[${data.coords.B.map(n => n.toFixed(3)).join(', ')}]`;
+                }
+
+            } catch (err) {
+                // Ignore transient fetch errors
+            }
+        }
+
+        // Poll status every 500ms
+        setInterval(pollStatus, 500);
+        pollStatus();
+    </script>
+</body>
+</html>

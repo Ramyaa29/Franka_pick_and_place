@@ -1,0 +1,25 @@
+services:
+  panda-robot-gui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: panda-pick-place:latest
+    container_name: panda_robot_stack
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - PANDA_WS=/workspace/panda_ws
+    volumes:
+      # WSLg X11 display socket so Gazebo & RViz display directly on Windows
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /mnt/wslg:/mnt/wslg:ro
+    # Shared memory allocation to prevent Gazebo/Ogre rendering buffer issues
+    shm_size: '2gb'
+    deploy:
+      resources:
+        limits:
+          memory: 4G
