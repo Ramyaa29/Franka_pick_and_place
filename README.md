@@ -1,5 +1,4 @@
 
-https://github.com/user-attachments/assets/38a375f6-37e0-4047-9e24-8939e00462f4
 # 🤖 Autonomous Franka Emika Panda Color Sorting Robot with Web GUI Dashboard
 
 [![ROS 2](https://img.shields.io/badge/ROS_2-Humble-3498DB?style=for-the-badge&logo=ros&logoColor=white)](https://docs.ros.org/en/humble/)
@@ -25,9 +24,6 @@ https://github.com/user-attachments/assets/1a273b5b-ed02-4052-8017-0c7a9d4657b0
 
 ================================================================= 
 
----
-
-=================================================================
 ### 🎥 VIDEO DEMO 2: FLASK WEB GUI DASHBOARD INTERACTION
 
 https://github.com/user-attachments/assets/c425e156-b893-4f9f-9b8e-5c4edbe72e1d
