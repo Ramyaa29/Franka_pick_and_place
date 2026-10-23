@@ -21,19 +21,6 @@ Built on **ROS 2 Humble** and **MoveIt 2**, this system features a **custom real
   
 
 https://github.com/user-attachments/assets/10ca574c-44ac-41cf-b216-2f3bab0099c5
-
-
-
-
-
-
-
-https://github.com/user-attachments/assets/0cdce0eb-e928-4099-9cc5-9360b3598045
-
-
-  
-
-
 ================================================================= 
 
 ---
@@ -43,7 +30,7 @@ https://github.com/user-attachments/assets/0cdce0eb-e928-4099-9cc5-9360b3598045
 
 
 
-
+https://github.com/user-attachments/assets/0cdce0eb-e928-4099-9cc5-9360b3598045
 
 
 =================================================================
@@ -52,12 +39,17 @@ https://github.com/user-attachments/assets/0cdce0eb-e928-4099-9cc5-9360b3598045
 
 ## Key Technologies Used
 
-Languages: Python, HTML, CSS, JavaScript, Bash |
-Robotics: ROS 2 Humble, MoveIt 2, PyMoveIt2, ros2_control|
-Simulation: Gazebo Sim Fortress, RViz2|
-Computer Vision: OpenCV, HSV-based color detection, RealSense RGB-D camera|
-Web Development: Flask, real-time MJPEG streaming|
-DevOps and Environment: Docker, Docker Compose, Ubuntu, WSL2|
+**Languages:** Python, HTML, CSS, JavaScript, Bash
+
+**Robotics:** ROS 2 Humble, MoveIt 2, PyMoveIt2, ros2_control
+
+**Simulation:** Gazebo Sim Fortress, RViz2
+
+**Computer Vision:** OpenCV, HSV-based color detection, RealSense RGB-D camera
+
+**Web Development:** Flask, real-time MJPEG streaming
+
+**DevOps and Environment:** Docker, Docker Compose, Ubuntu, WSL2
 
 ## 🌟 Unique Features & Enhancements
 
